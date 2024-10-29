@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import Pusher from 'pusher-js'; // Import Pusher
 import { getAllOrders } from '../services/orderService';
 import { images } from '../../config/imgConfig';
 
@@ -9,14 +9,26 @@ const Dashboard = () => {
   const notificationSound = new Audio(images.bell); // Adjust the path as necessary
 
   useEffect(() => {
-    // Establish socket connection with credentials
-const socket = io('https://bigbew-service.vercel.app', {
-  withCredentials: true,
+    // Initialize Pusher
+    const pusher = new Pusher('a8f6e6479ccbf226115c', { // Use your Pusher key
+      cluster: 'ap1', // Use your Pusher cluster
+      encrypted: true,
+    });
 
-});
+    // Subscribe to the orders channel
+    const channel = pusher.subscribe('orders');
+    channel.bind('new-order', (data) => {
+      console.log('New order received:', data);
+      setQueueNumber(data.orderData.orderNumber);
+      // Play sound when a new order is received
+      try {
+        notificationSound.play();
+      } catch (error) {
+        console.error('Error playing sound:', error);
+      }
+    });
 
-
-
+    // Fetch initial orders
     const fetchInitialOrders = async () => {
       try {
         const orders = await getAllOrders();
@@ -33,36 +45,12 @@ const socket = io('https://bigbew-service.vercel.app', {
 
     fetchInitialOrders();
 
-    // Listen for new order events
-    socket.on('newOrder', (order) => {
-      console.log('New order received:', order);
-      setQueueNumber(order.orderNumber);
-      // Play sound when a new order is received
-      try {
-        notificationSound.play();
-      } catch (error) {
-        console.error('Error playing sound:', error);
-      }
-    });
-
-    // Listen for connection status
-    socket.on('connect', () => {
-      setIsConnected(true);
-      console.log('Connected to server:', socket.id);
-    });
-
-    socket.on('disconnect', () => {
-      setIsConnected(false);
-      console.log('Disconnected from server:', socket.id);
-    });
-
-    // Check for connection error
-    socket.on('connect_error', (err) => {
-      console.error('Connection Error:', err.message);
-    });
+    // Update connection status
+    setIsConnected(true);
+    console.log('Connected to Pusher');
 
     return () => {
-      socket.disconnect(); // Clean up on component unmount
+      pusher.disconnect(); // Clean up on component unmount
     };
   }, []);
 
