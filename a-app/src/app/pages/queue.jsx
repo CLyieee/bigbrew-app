@@ -32,11 +32,14 @@ const Dashboard = () => {
     // Fetch initial orders
     const fetchInitialOrders = async () => {
       try {
-        const orders = await getAllOrders();
+        const orders = await getAllOrders(); // Fetch all orders from the database
         const pendingOrders = orders.filter(order => order.status === 'Pending');
+
+        // Get the latest pending order number
         if (pendingOrders.length > 0) {
-          setQueueNumber(pendingOrders[0].orderNumber); // Show the first pending order if any
-          localStorage.setItem('latestOrderNumber', pendingOrders[0].orderNumber); // Save to localStorage
+          const latestOrder = pendingOrders[pendingOrders.length - 1]; // Assuming orders are sorted by date
+          setQueueNumber(latestOrder.orderNumber); // Show the latest pending order
+          localStorage.setItem('latestOrderNumber', latestOrder.orderNumber); // Save to localStorage
         } else {
           setQueueNumber(null);
           localStorage.removeItem('latestOrderNumber'); // Remove from localStorage if no pending orders
