@@ -74,7 +74,7 @@ const Menu = () => {
   const generateUniqueOrderNumber = () => {
     let newOrderNumber;
     do {
-      newOrderNumber = Math.floor(Math.random() * 30) + 1;
+      newOrderNumber = Math.floor(Math.random() * 100) + 1;
     } while (pendingOrderNumbers.includes(newOrderNumber)); // Check if number is already pending
     return newOrderNumber;
   };
