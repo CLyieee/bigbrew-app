@@ -10,9 +10,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     // Establish socket connection with credentials
-    const socket = io('https://bigbew-service.vercel.app', {
-      withCredentials: true, // Allow credentials
-    });
+const socket = io('https://bigbew-service.vercel.app', {
+  withCredentials: true,
+  transports: ['websocket'], // Force WebSocket transport
+});
+
 
 
     const fetchInitialOrders = async () => {
