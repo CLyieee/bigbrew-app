@@ -12,7 +12,7 @@ const Dashboard = () => {
     // Establish socket connection with credentials
 const socket = io('https://bigbew-service.vercel.app', {
   withCredentials: true,
-  transports: ['websocket'], // Force WebSocket transport
+
 });
 
 
