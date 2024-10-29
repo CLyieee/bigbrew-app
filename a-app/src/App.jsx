@@ -11,8 +11,8 @@ function App() {
     <Router>
       <Toaster position='top-right' toastOptions={{ duration: 2000 }} />
       <Routes>
-        <Route path="/q" element={<Menu />} />
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Menu />} />
+        <Route path="/queue" element={<Dashboard />} />
         {/* <Route path="/home" element={<Dashboard />} /> */}
       </Routes>
     </Router>
