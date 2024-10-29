@@ -1,35 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getOrderByNumber } from '../services/orderService'; // Import the service method
+import axios from 'axios'; // Import axios for API calls
 
 const OrderNumber = ({ orderNumber }) => { // Receive orderNumber as a prop
   const navigate = useNavigate();
   const [orderStatus, setOrderStatus] = useState('Pending'); // Initialize order status
-  const [error, setError] = useState(null); // State to handle errors
-  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchOrderStatus = async () => {
       try {
-        const orderData = await getOrderByNumber(orderNumber); // Use the service method
-        if (orderData && orderData.status) {
-          setOrderStatus(orderData.status); // Update the order status
-        } else {
-          setError("Order not found.");
+        // Make an API call to fetch the order status from the database
+        const response = await axios.get(`/api/orders/${orderNumber}`); // Adjust the endpoint as necessary
+        if (response.data && response.data.status) {
+          setOrderStatus(response.data.status); // Update the order status
         }
       } catch (error) {
         console.error("Error fetching order status:", error);
-        setError(error.message); // Set error message
-      } finally {
-        setLoading(false); // Set loading to false after fetch
       }
     };
 
     fetchOrderStatus();
   }, [orderNumber]);
-
-  if (loading) return <div>Loading...</div>; // Show loading state
-  if (error) return <div>Error: {error}</div>; // Show error message
 
   return (
     <div className="flex items-center justify-center p-4 md:p-6">
