@@ -14,23 +14,23 @@ const createOrder = async (orderData) => {
 };
 
 
-// const getAllOrders = async () => {
-//   try {
-//     const response = await axios.get(`${BASE_URL}/api/orders`);
-//     return response.data;
-//   } catch (error) {
-//     throw new Error(`Error fetching orders: ${error.message}`);
-//   }
-// };
-
-export const getAllOrders = async () => {
+const getAllOrders = async () => {
   try {
-    const response = await axios.get('${BASE_URL}/api/order/get/all'); // Update to match your endpoint
+    const response = await axios.get(`${BASE_URL}/api/orders/get/all`);
     return response.data;
   } catch (error) {
-    throw new Error('Error fetching orders: ' + error.message);
+    throw new Error(`Error fetching orders: ${error.message}`);
   }
 };
+
+// export const getAllOrders = async () => {
+//   try {
+//     const response = await axios.get('${BASE_URL}/api/order/get/all'); // Update to match your endpoint
+//     return response.data;
+//   } catch (error) {
+//     throw new Error('Error fetching orders: ' + error.message);
+//   }
+// };
 
 const updateOrder = async (orderNumber, updateData) => {
   try {
