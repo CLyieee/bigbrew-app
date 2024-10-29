@@ -20,7 +20,9 @@ const Dashboard = () => {
     const channel = pusher.subscribe('orders');
     channel.bind('new-order', (data) => {
       console.log('New order received:', data);
-      setLastQueueNumber(currentQueueNumber); // Store the current number as last before updating
+      
+      // Update the last order number before updating the current order number
+      setLastQueueNumber(currentQueueNumber); // Store the current number as last
       setCurrentQueueNumber(data.orderData.orderNumber); // Update to the latest order number
 
       // Play sound when a new order is received
@@ -57,7 +59,7 @@ const Dashboard = () => {
     return () => {
       pusher.disconnect(); // Clean up on component unmount
     };
-  }, [currentQueueNumber]); // Include currentQueueNumber to track changes
+  }, []); // Empty dependency array to run once on mount
 
   return (
     <div className="h-screen w-screen flex flex-col items-center justify-center bg-gray-900">
