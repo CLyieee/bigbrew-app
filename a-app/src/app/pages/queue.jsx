@@ -11,8 +11,12 @@ const Dashboard = () => {
   useEffect(() => {
     // Establish socket connection with credentials
     const socket = io('https://bigbew-service.vercel.app', {
-      withCredentials: true, // Allow credentials
-    });
+  withCredentials: true,
+  transports: ['websocket'], // Specify transport if needed
+  pingTimeout: 60000, // Match the server's ping timeout
+  pingInterval: 25000, // Match the server's ping interval
+});
+
 
     const fetchInitialOrders = async () => {
       try {
