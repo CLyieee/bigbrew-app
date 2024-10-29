@@ -9,7 +9,10 @@ const Dashboard = () => {
   const notificationSound = new Audio(images.bell); // Adjust the path as necessary
 
   useEffect(() => {
-    const socket = io('https://bigbew-service.vercel.app');
+    // Establish socket connection with credentials
+    const socket = io('https://bigbew-service.vercel.app', {
+      withCredentials: true, // Allow credentials
+    });
 
     const fetchInitialOrders = async () => {
       try {
