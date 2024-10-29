@@ -20,6 +20,7 @@ const Dashboard = () => {
     channel.bind('new-order', (data) => {
       console.log('New order received:', data);
       setQueueNumber(data.orderData.orderNumber); // Update to the latest order number
+      localStorage.setItem('latestOrderNumber', data.orderData.orderNumber); // Save to localStorage
       // Play sound when a new order is received
       try {
         notificationSound.play();
@@ -35,8 +36,10 @@ const Dashboard = () => {
         const pendingOrders = orders.filter(order => order.status === 'Pending');
         if (pendingOrders.length > 0) {
           setQueueNumber(pendingOrders[0].orderNumber); // Show the first pending order if any
+          localStorage.setItem('latestOrderNumber', pendingOrders[0].orderNumber); // Save to localStorage
         } else {
           setQueueNumber(null);
+          localStorage.removeItem('latestOrderNumber'); // Remove from localStorage if no pending orders
         }
       } catch (error) {
         console.error('Error fetching initial orders:', error);
@@ -44,6 +47,12 @@ const Dashboard = () => {
     };
 
     fetchInitialOrders();
+
+    // Retrieve the latest order number from local storage on component mount
+    const storedOrderNumber = localStorage.getItem('latestOrderNumber');
+    if (storedOrderNumber) {
+      setQueueNumber(storedOrderNumber);
+    }
 
     // Update connection status
     setIsConnected(true);
