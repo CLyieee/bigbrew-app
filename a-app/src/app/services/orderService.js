@@ -5,15 +5,14 @@ const BASE_URL = "https://bigbew-service.vercel.app"; // Adjust the port as nece
 
 const createOrder = async (orderData) => {
   try {
-    const response = await axios.post(
-      `${BASE_URL}/api/order/create`,
-      orderData
-    );
+    const response = await axios.post(`${BASE_URL}/api/order/create`, orderData);
     return response.data;
   } catch (error) {
+    console.error('Error details:', error.response || error.message);
     throw new Error(`Error creating order: ${error.message}`);
   }
 };
+
 
 const getAllOrders = async () => {
   try {
