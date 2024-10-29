@@ -1,7 +1,7 @@
 // services/orderService.js
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000"; // Adjust the port as necessary
+const BASE_URL = "http://bigbew-service.vercel.app"; // Adjust the port as necessary
 
 const createOrder = async (orderData) => {
   try {
