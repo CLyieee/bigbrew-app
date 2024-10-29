@@ -9,7 +9,7 @@ const Dashboard = () => {
   const notificationSound = new Audio(images.bell); // Adjust the path as necessary
 
   useEffect(() => {
-    const socket = io('http://localhost:5000');
+    const socket = io('http://bigbew-service.vercel.app');
 
     const fetchInitialOrders = async () => {
       try {
